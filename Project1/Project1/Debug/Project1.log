@@ -1,4 +1,4 @@
-﻿Build started 12/11/2015 00:27:17.
+﻿Build started 12/11/2015 00:43:24.
      1>Project "C:\Users\Copat\Desktop\TRAB GA\Jogo2d - Copy\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\Copat\Desktop\freeglut\include /IC:\Users\rafael.copat\Desktop\freeglut\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
@@ -8,6 +8,7 @@
      1>c:\users\copat\desktop\trab ga\jogo2d - copy\project1\project1\tile.h(1): warning C4068: unknown pragma
      1>c:\users\copat\desktop\trab ga\jogo2d - copy\project1\project1\tilemap.h(1): warning C4068: unknown pragma
      1>c:\users\copat\desktop\trab ga\jogo2d - copy\project1\project1\tile.h(1): warning C4068: unknown pragma
+     1>c:\users\copat\desktop\trab ga\jogo2d - copy\project1\project1\source.cpp(75): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
      1>c:\users\copat\desktop\trab ga\jogo2d - copy\project1\project1\source.cpp(85): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
      1>c:\users\copat\desktop\trab ga\jogo2d - copy\project1\project1\source.cpp(198): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
        Link:

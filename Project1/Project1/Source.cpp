@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string.h>
 #include <cmath>
+#include <math.h>  
 #include <vector>
 #include <fstream>
 #include "Image.h"
@@ -52,8 +53,7 @@ void init(void)
 			lastScreen.setPixelOpaco(0, 0, 0, i, j);
 		}
 	}
-	tilemap.setSize(25);
-	Tile tiles[25];
+	tilemap.setSize(100);
 	tilemap.setTiles(tile);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -72,7 +72,7 @@ void drawTileMap() {
 	//Tile *tiles = tilemap.getTiles();
 	int cont = 0;
 	int multiplier = 1;
-	int n = 10;
+	int n = sqrt(tilemap.getSize())*2;
 	for (int i = 1; i < n; i++) {
 		if (i <= n / 2)
 			numberOfTiles = i % (n / 2);
@@ -133,58 +133,6 @@ void mouse(int button, int state, int x, int y) {
 	//element->col = c;
 	//element->lin = l;
 }
-
-//void drawTilemap() {
-//	double x = 380;
-//	double y = 500;
-//	Image* tilemap = new Image[100];
-//	for (int i = 0; i < 100; i++) {
-//		tilemap[i] = tile;
-//	}
-//	for (int i = 0; i < gameWidth; i++) {
-//		for (int j = 0; j < gameHeight; j++) {
-//			lastScreen.setPixelOpaco(0, 0, 0, i, j);
-//		}
-//	}
-//	int numberOfTiles = 0;
-//	int cont = 0;
-//	int multiplier = 1;
-//	int n = 20;
-//	for (int i = 1; i < n; i++) {
-//		if (i <= n / 2)
-//			numberOfTiles = i % (n / 2);
-//		else
-//			numberOfTiles--;
-//		if (i == n / 2) {
-//			numberOfTiles = n / 2;
-//		}
-//		for (int j = 0; j < numberOfTiles; j++) {
-//			lastScreen.plot(tilemap[cont].getPixels(), x, y, tile.getWidth(), tile.getHeight());
-//			cont++;
-//			x = x + tile.getWidth();
-//		}
-//		if (i < n / 2) {
-//			x = x - tile.getWidth() * numberOfTiles;
-//			x = x - tile.getWidth() / 2;
-//		}
-//		else if (i == n / 2) {
-//			x = x - tile.getWidth()*(numberOfTiles - 1);
-//			x = x - tile.getWidth() / 2;
-//		}
-//		else {
-//			x = x - tile.getWidth() * (numberOfTiles - 1);
-//			x = x - tile.getWidth() / 2;
-//		}
-//		y = y - (tile.getHeight() / 2);
-//	}
-//	//x = c * Tw + L * tw / 2
-//	//    y = L * Th / 2
-//
-//	//c = coluna
-//	//L = linha
-//	//Tw = tile width
-//	//Th = tile height
-//}
 
 void reshape(int w, int h)
 {

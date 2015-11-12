@@ -28,10 +28,13 @@ public:
 		tiles = new Tile[size];
 	}
 	void setTiles(Image tile) {
-		for (int i = 0; i < 25; i++) {
+		for (int i = 0; i < size; i++) {
 			Tile a(tile);
 			tiles[i] = a;
 		}
+	}
+	int getSize() {
+		return size;
 	}
 
 private:
