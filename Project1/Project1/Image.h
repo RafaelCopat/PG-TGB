@@ -75,13 +75,12 @@ public:
 		return s;
 
 	}
-
-	void plot(int *foreground, int xi, int yi, int w, int h){
+	void plot(int *foreground, int xi, int yi, int w, int h) {
 		int xx;
 		int yy;
 		int cont = 0;
-		for (int y = 0; y < h; y++){
-			for (int x = 0; x < w; x++){
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
 				xx = xi + x;
 				yy = yi + y;
 				int c = (foreground[cont] & 0xFF000000) >> 24;

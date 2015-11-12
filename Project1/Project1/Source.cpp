@@ -21,8 +21,8 @@
 
 Tilemap tilemap;
 Image tile("tile.ptm");
-#define gameWidth 800
-#define gameHeight 600
+#define gameWidth 350
+#define gameHeight 200
 
 Image lastScreen(gameWidth, gameHeight);
 
@@ -30,15 +30,6 @@ void drawTilemap();
 
 void display(void)
 {
-	
-	//x = c * Tw + L * tw / 2
-	//    y = L * Th / 2
-
-	//c = coluna
-	//L = linha
-	//Tw = tile width
-	//Th = tile height
-
 	glClear(GL_COLOR_BUFFER_BIT);
 	glDrawPixels(gameWidth, gameHeight, GL_BGRA_EXT, GL_UNSIGNED_BYTE,
 		lastScreen.getPixels());
@@ -66,10 +57,9 @@ void init(void)
 }
 
 void drawTileMap() {
-	double x = 380;
-	double y = 500;
+	int x = gameWidth/2 - (tile.getWidth() / 2);
+	int y = 170;
 	int numberOfTiles = 0;
-	//Tile *tiles = tilemap.getTiles();
 	int cont = 0;
 	int multiplier = 1;
 	int n = sqrt(tilemap.getSize())*2;
