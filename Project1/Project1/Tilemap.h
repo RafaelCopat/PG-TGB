@@ -44,39 +44,51 @@ public:
 			tiles[i] = a;
 		}
 	}
-	void setCenterTile(Image tile) {
+	void setCenterTile(Image tile, int x, int y) {
 			Tile a(tile);
 			tiles[size/2] = a;
-			tileSelected = size / 2;
-
+			tileSelected = size/2;
 	}
-	void tilewalk(const int DIRECTION) {
+	void tilewalk(const int DIRECTION, Image tile, Image greentile) {
+		int w = tiles[0].getWidth();
+		int h = tiles[0].getHeight();
+		int newTileX = 0;
+		int newTileY = 0;
 		switch (DIRECTION) {
 		case NORTH:
-			
+			newTileY = tileSelectedY - h;
+			newTileX = tileSelectedX;
 			break;
 		case SOUTH:
-			
+			newTileX = tileSelectedX;
+			newTileY = tileSelectedY + h;
 			break;
 		case EAST:
-			
+			newTileX = tileSelectedX + w;
+			newTileY = tileSelectedY;
 			break;
 		case WEST:
-			
+			newTileX = tileSelectedX - w;
+			newTileY = tileSelectedY;
 			break;
 		case NORTHEAST:
-
+			newTileX = tileSelectedX + w / 2;
+			newTileY = tileSelectedY - h / 2;
 			break;
 		case SOUTHEAST:
-
+			newTileX = tileSelectedX + w / 2;
+			newTileY = tileSelectedY + h / 2;
 			break;
 		case NORTHWEST:
-
+			newTileX = tileSelectedX - w / 2;
+			newTileY = tileSelectedY - h / 2;
 			break;
 		case SOUTHWEST:
-
+			newTileX = tileSelectedX - w / 2;
+			newTileY = tileSelectedY + h / 2;
 			break;
 		}
+		setTileGreen(newTileX, newTileY, tile, greentile);
 	}
 	int getSize() {
 		return size;
@@ -85,8 +97,10 @@ public:
 		int tilenumber = whatTileIs(x, y);
 		if (tilenumber != -1) {
 			tiles[tileSelected].setImage(tile);
-			tiles[tilenumber].setImage(greentile);
+			tileSelectedX = x;
+			tileSelectedY = y;
 			tileSelected = tilenumber;
+			tiles[tilenumber].setImage(greentile);
 		}
 	}
 	int whatTileIs(int x, int y) {
@@ -98,8 +112,6 @@ public:
 		double mapy = ((y/ halfheight) - (((startx+halfwidth)-x)  / halfwidth)) / 2;
 		int smapx = floor(mapx);
 		int smapy = floor(mapy);
-		std::cout << mapx;
-		std::cout << mapy;
 		int tilenumber = smapx * sqrt(size) + smapy;
 		if (smapy >= sqrt(size) || smapx >= sqrt(size) || smapx < 0 || smapy < 0) {
 			return -1;
@@ -111,6 +123,8 @@ public:
 private:
 	Tile * tiles;
 	int size;
+	int tileSelectedX;
+	int tileSelectedY;
 	int tileSelected;
 	double startx;
 	double starty;

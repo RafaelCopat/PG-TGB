@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\Copat\Desktop\freeglut\lib;C:\Users\rafael.copat\Desktop\freeglut\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\rafael.copat\freeglut\lib;C:\Users\Copat\Desktop\freeglut\lib;C:\Users\rafael.copat\Desktop\freeglut\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Copat\Desktop\freeglut\include;C:\Users\rafael.copat\Desktop\freeglut\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\rafael.copat\freeglut\include;C:\Users\Copat\Desktop\freeglut\include;C:\Users\rafael.copat\Desktop\freeglut\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

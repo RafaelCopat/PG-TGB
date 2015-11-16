@@ -24,9 +24,12 @@ Image tile("tile.ptm");
 Image greentile("greentile.ptm");
 
 
-#define gameWidth 342
+//#define gameWidth 342
+//#define gameHeight 200
+//#define NUMBER_OF_TILES 49
+#define gameWidth 360
 #define gameHeight 200
-#define NUMBER_OF_TILES 49
+#define NUMBER_OF_TILES 81
 #define NORTH 1
 #define EAST 2
 #define WEST 3
@@ -59,7 +62,7 @@ void init(void)
 	}
 	tilemap.setSize(NUMBER_OF_TILES);
 	tilemap.setTiles(tile);
-	tilemap.setCenterTile(greentile);
+	tilemap.setCenterTile(greentile, gameWidth/2 + 1, (((int)(sqrt(NUMBER_OF_TILES)/2)))*tile.getHeight() + 1);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, gameWidth, gameHeight);
@@ -97,7 +100,35 @@ void timer(int value)
 }
 
 void keyboard(unsigned char key, int x, int y) {
-
+	switch (key) {
+	case '8':
+		tilemap.tilewalk(NORTH, tile, greentile);
+		break;
+	case '2':
+		tilemap.tilewalk(SOUTH, tile, greentile);
+		break;
+	case '6':
+		tilemap.tilewalk(EAST, tile, greentile);
+		break;
+	case '4':
+		tilemap.tilewalk(WEST, tile, greentile);
+		break;
+	case '9':
+		tilemap.tilewalk(NORTHEAST, tile, greentile);
+		break;
+	case '3':
+		tilemap.tilewalk(SOUTHEAST, tile, greentile);
+		break;
+	case '7':
+		tilemap.tilewalk(NORTHWEST, tile, greentile);
+		break;
+	case '1':
+		tilemap.tilewalk(SOUTHWEST, tile, greentile);
+		break;
+	default:
+		break;
+	}
+	drawTileMap();
 }
 void mousemap(int x, int y, int &c, int &l) {
 	int a = 0;
@@ -108,8 +139,10 @@ void mousemap(int x, int y, int &c, int &l) {
 }
 
 void mouse(int button, int state, int x, int y) {
+	if (GLUT_LEFT_BUTTON == button && state == GLUT_DOWN) {
 	tilemap.setTileGreen(x, y, tile, greentile);
 	drawTileMap();
+    }
 	//tilemap.whatTileIs(x, y);
 	//int c, l;
 	//mousemap(x, y, c, l);
