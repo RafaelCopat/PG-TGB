@@ -21,12 +21,25 @@
 
 Tilemap tilemap;
 Image tile("tile.ptm");
-#define gameWidth 350
+Image greentile("greentile.ptm");
+
+
+#define gameWidth 342
 #define gameHeight 200
+#define NUMBER_OF_TILES 49
+#define NORTH 1
+#define EAST 2
+#define WEST 3
+#define SOUTH 4
+#define NORTHEAST 5
+#define SOUTHEAST 6
+#define NORTHWEST 7
+#define SOUTHWEST 8
+
 
 Image lastScreen(gameWidth, gameHeight);
 
-void drawTilemap();
+void drawTileMap();
 
 void display(void)
 {
@@ -44,51 +57,36 @@ void init(void)
 			lastScreen.setPixelOpaco(0, 0, 0, i, j);
 		}
 	}
-	tilemap.setSize(100);
+	tilemap.setSize(NUMBER_OF_TILES);
 	tilemap.setTiles(tile);
+	tilemap.setCenterTile(greentile);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, gameWidth, gameHeight);
-	gluOrtho2D(0, gameWidth, 0, gameHeight);
+	gluOrtho2D(0, gameWidth, 0, gameHeight );
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
+	drawTileMap();
 }
 
 void drawTileMap() {
-	int x = gameWidth/2 - (tile.getWidth() / 2);
-	int y = 170;
-	int numberOfTiles = 0;
+	int x = gameWidth / 2 - (tile.getWidth() / 2);
+	int y = 180;
+	tilemap.setStartCoords(x, y);
+	int screenx = 0;
+	int screeny = 0;
 	int cont = 0;
 	int multiplier = 1;
-	int n = sqrt(tilemap.getSize())*2;
-	for (int i = 1; i < n; i++) {
-		if (i <= n / 2)
-			numberOfTiles = i % (n / 2);
-		else
-			numberOfTiles--;
-		if (i == n / 2) {
-			numberOfTiles = n / 2;
-		}
-		for (int j = 0; j < numberOfTiles; j++) {
-			lastScreen.plot(tilemap.getTile(cont).getImagePixels(), x, y, tile.getWidth(), tile.getHeight());
+	int n = sqrt(tilemap.getSize());
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			screenx = x + (j - i) * (tile.getWidth()/2);
+			screeny = y - (j + i) * (tile.getHeight()/2);
+	lastScreen.plot(tilemap.getTile(cont).getImagePixels(), screenx, screeny, tile.getWidth(), tile.getHeight());
 			cont++;
-			x = x + tile.getWidth();
 		}
-		if (i < n / 2) {
-			x = x - tile.getWidth() * numberOfTiles;
-			x = x - tile.getWidth() / 2;
-		}
-		else if (i == n / 2) {
-			x = x - tile.getWidth()*(numberOfTiles - 1);
-			x = x - tile.getWidth() / 2;
-		}
-		else {
-			x = x - tile.getWidth() * (numberOfTiles - 1);
-			x = x - tile.getWidth() / 2;
-		}
-		y = y - (tile.getHeight() / 2);
 	}
 	glutPostRedisplay();
 }
@@ -110,8 +108,9 @@ void mousemap(int x, int y, int &c, int &l) {
 }
 
 void mouse(int button, int state, int x, int y) {
+	tilemap.setTileGreen(x, y, tile, greentile);
 	drawTileMap();
-
+	//tilemap.whatTileIs(x, y);
 	//int c, l;
 	//mousemap(x, y, c, l);
 	//1 isoview->mousemap(mx, my, c, l)
@@ -124,13 +123,7 @@ void mouse(int button, int state, int x, int y) {
 	//element->lin = l;
 }
 
-void reshape(int w, int h)
-{
-	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0.0, (GLdouble)w, 0.0, (GLdouble)h);
-}
+
 
 int main(int argc, char** argv) {
 	srand(time(NULL));
@@ -142,7 +135,6 @@ int main(int argc, char** argv) {
 	init();
 	glutTimerFunc(100, timer, 0);
 	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
 	glutMouseFunc(mouse);
 	glutKeyboardFunc(keyboard);
 	glutMainLoop();

@@ -22,6 +22,15 @@ public:
 	int* getImagePixels() {
 		return image.getPixels();
 	}
+	int getHeight() {
+		return image.getHeight();
+	}
+	int getWidth() {
+		return image.getWidth();
+	}
+	void setImage(Image image) {
+		this->image = image;
+	}
 
 private:
 	int textura;
