@@ -1,4 +1,3 @@
-#pragma onca
 #include <stdlib.h>
 #include "Image.h"
 #include <algorithm>

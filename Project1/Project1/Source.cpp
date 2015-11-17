@@ -6,28 +6,18 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-#include <sstream>
 #include <string.h>
 #include <cmath>
-#include <math.h>  
-#include <vector>
 #include <fstream>
 #include "Image.h"
 #include "Layer.h"
 #include "Element.h"
 #include "Tile.h"
 #include "Tilemap.h"
-//Initialize Images
 
 Tilemap tilemap;
-Image tile("tile.ptm");
-Image greentile("greentile.ptm");
 
-
-//#define gameWidth 342
-//#define gameHeight 200
-//#define NUMBER_OF_TILES 49
-#define gameWidth 360
+#define gameWidth 342
 #define gameHeight 180
 #define NUMBER_OF_TILES 81
 #define NORTH 1
@@ -56,9 +46,7 @@ void drawTile(float x, float y, float w, float h, int r, int g, int b) {
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	//glDrawPixels(gameWidth, gameHeight, GL_BGRA_EXT, GL_UNSIGNED_BYTE,
-		//lastScreen.getPixels());
-	int x = gameWidth / 2 - (tile.getWidth() / 2);
+	int x = gameWidth / 2 - (tilemap.getTile(0).getWidth() / 2);
 	int y = 180;
 	tilemap.setStartCoords(x, y);
 	int screenx = 0;
@@ -69,8 +57,8 @@ void display(void)
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			
-			screenx = x + (j - i) * (tile.getWidth()/2);
-			screeny = y - (j + i) * (tile.getHeight()/2);
+			screenx = x + (j - i) * (tilemap.getTile(0).getWidth() /2);
+			screeny = y - (j + i) * (tilemap.getTile(0).getWidth() /2);
 			int tilew = tilemap.getTile(cont).getWidth();
 			int tileh = tilemap.getTile(cont).getHeight();
 			int tiler = tilemap.getTile(cont).getR();
@@ -153,10 +141,8 @@ void keyboard(unsigned char key, int x, int y) {
 }
 void mousemap(int x, int y, int &c, int &l) {
 	int a = 0;
-	l = y / (tile.getHeight() / 2);
+	l = y / (tilemap.getTile(0).getWidth() / 2);
 
-	//x = c * Tw + L * tw / 2
-	//    y = L * Th / 2
 }
 
 void mouse(int button, int state, int x, int y) {
@@ -164,17 +150,6 @@ void mouse(int button, int state, int x, int y) {
 	tilemap.setTileGreen(x, y);
 	drawTileMap();
     }
-	//tilemap.whatTileIs(x, y);
-	//int c, l;
-	//mousemap(x, y, c, l);
-	//1 isoview->mousemap(mx, my, c, l)
-	//    int x0, y0
-	//    2 isoview->calcposdesenhatile(c, l, x0, y0)
-	//    3 if (!pontPertenceTile(mx - x0, my - y0)){
-	//    isoview->tileWalking(c, l, calc.DirecaoTW(mx - xo, m - yo, tw, th);
-	//}
-	//element->col = c;
-	//element->lin = l;
 }
 
 
