@@ -21,11 +21,6 @@ public:
 	Tilemap() {
 
 	}
-	
-	//Tilemap(Tile *tiles, int size){
-	//this->tiles = tiles;
-	//this->size = size;
-	//}
 
 	Tile getTile(int index) {
 		return tiles[index];
@@ -38,18 +33,19 @@ public:
 		this->size = size;
 		tiles = new Tile[size];
 	}
-	void setTiles(Image tile) {
+
+	void setTiles(float w, float h, int r, int g, int b) {
 		for (int i = 0; i < size; i++) {
-			Tile a(tile);
-			tiles[i] = a;
+			Tile tile(w, h, r, g, b);
+			tiles[i] = tile;
 		}
 	}
-	void setCenterTile(Image tile, int x, int y) {
-			Tile a(tile);
-			tiles[size/2] = a;
-			tileSelected = size/2;
+	void setCenterTile() {
+		tiles[size / 2].setRgb(0, 255, 0);
+		tileSelected = size / 2;
 	}
-	void tilewalk(const int DIRECTION, Image tile, Image greentile) {
+	
+	void tilewalk(const int DIRECTION) {
 		int w = tiles[0].getWidth();
 		int h = tiles[0].getHeight();
 		int newTileX = 0;
@@ -88,19 +84,19 @@ public:
 			newTileY = tileSelectedY + h / 2;
 			break;
 		}
-		setTileGreen(newTileX, newTileY, tile, greentile);
+		setTileGreen(newTileX, newTileY);
 	}
 	int getSize() {
 		return size;
 	}
-	void setTileGreen(int x, int y, Image tile, Image greentile) {
+	void setTileGreen(int x, int y) {
 		int tilenumber = whatTileIs(x, y);
 		if (tilenumber != -1) {
-			tiles[tileSelected].setImage(tile);
+			tiles[tileSelected].setRgb(120,120,120);
 			tileSelectedX = x;
 			tileSelectedY = y;
 			tileSelected = tilenumber;
-			tiles[tilenumber].setImage(greentile);
+			tiles[tilenumber].setRgb(0,255,0);
 		}
 	}
 	int whatTileIs(int x, int y) {
@@ -108,8 +104,8 @@ public:
 		double halfheight = tiles[0].getHeight() / 2;
 		double realx = (double)x;
 		double realy = (double)y;
-		double mapx = ((((startx + halfwidth) - x) / halfwidth) + ((y) / halfheight)) / 2;
-		double mapy = ((y/ halfheight) - (((startx+halfwidth)-x)  / halfwidth)) / 2;
+		double mapx = ((((startx + halfwidth) - x) / halfwidth) + ((y / halfheight))) / 2;
+		double mapy = ((y / halfheight) - (((startx+halfwidth)-x)  / halfwidth)) / 2;
 		int smapx = floor(mapx);
 		int smapy = floor(mapy);
 		int tilenumber = smapx * sqrt(size) + smapy;
