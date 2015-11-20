@@ -58,7 +58,7 @@ void display(void)
 		for (int j = 0; j < n; j++) {
 			
 			screenx = x + (j - i) * (tilemap.getTile(0).getWidth() /2);
-			screeny = y - (j + i) * (tilemap.getTile(0).getWidth() /2);
+			screeny = y - (j + i) * (tilemap.getTile(0).getHeight() /2);
 			int tilew = tilemap.getTile(cont).getWidth();
 			int tileh = tilemap.getTile(cont).getHeight();
 			int tiler = tilemap.getTile(cont).getR();
@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(gameWidth, gameHeight);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("SuperMarioDodge");
+	glutCreateWindow("Tiles");
 	init();
 	glutTimerFunc(100, timer, 0);
 	glutDisplayFunc(display);
