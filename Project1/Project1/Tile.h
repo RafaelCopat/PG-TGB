@@ -14,55 +14,29 @@ public:
 	Tile() {
 
 	}
-	Tile(int width, int height, int r, int g, int b, GLuint textura) {
+	Tile(int width, int height, GLuint texture) {
 		this->width = width;
 		this->height = height;
-		this->r = r;
-		this->g = g;
-		this->b = b;
-		this->textura = textura;
-	}
-	Tile(Image image) {
-		this->image = image;
-	}
-	
-	int* getImagePixels() {
-		return image.getPixels();
+		this->texture = texture;
 	}
 	int getHeight() {
-		//return image.getHeight();
 		return height;
 	}
 	int getWidth() {
-		//return image.getWidth();
 		return width;
 	}
-	void setImage(Image image) {
-		this->image = image;
+	
+	GLuint getTextura() {
+		return texture;
 	}
-	int getR() {
-		return r;
-	}
-	int getG() {
-		return g;
-	}
-	int getB() {
-		return b;
-	}
-	void setRgb(int r,int g, int b) {
-		this->r = r;
-		this->g = g;
-		this->b = b;
+	void setTexture(GLuint texture) {
+		this->texture = texture;
 	}
 
 private:
-	GLuint textura;
-	int r;
-	int g;
-	int b;
+	GLuint texture;
 	int width;
 	int height;
-	Image image;
 };
 
 #endif

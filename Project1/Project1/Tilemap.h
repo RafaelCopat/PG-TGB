@@ -31,6 +31,18 @@ public:
 		glVertex2d(x - w / 2, y - h / 2);
 
 	}
+	void drawTile(float x, float y, float w, float h, Tile tile) {
+		
+		glTexCoord2f(0, 0);
+		glVertex2d(x, y);
+		glTexCoord2f(0, 1);
+		glVertex2d(x + w / 2, y - h / 2);
+		glTexCoord2f(1, 1);
+		glVertex2d(x, y - h);
+		glTexCoord2f(1, 0);
+		glVertex2d(x - w / 2, y - h / 2);
+
+	}
 	void drawMap() {
 		int x = gameWidth / 2 - (getTile(0).getWidth() / 2);
 		int y = 180;
@@ -42,21 +54,15 @@ public:
 		int n = sqrt(getSize());
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-
 				screenx = x + (j - i) * (getTile(0).getWidth() / 2);
 				screeny = y - (j + i) * (getTile(0).getHeight() / 2);
 				int tilew = getTile(cont).getWidth();
 				int tileh = getTile(cont).getHeight();
-				int tiler = getTile(cont).getR();
-				int tileg = getTile(cont).getG();
-				int tileb = getTile(cont).getB();
-				cont++;
+				glBindTexture(GL_TEXTURE_2D, getTile(cont).getTextura());
 				glBegin(GL_QUADS);
-				drawTile(screenx + tilew / 2, screeny, tilew, tileh, tiler, tileg, tileb);
+				drawTile(screenx + tilew / 2, screeny, tilew, tileh, getTile(cont));
 				glEnd();
-				glBegin(GL_LINE_LOOP);
-				drawTile(screenx + tilew / 2, screeny, tilew, tileh, 255, 255, 255);
-				glEnd();
+				cont++;
 			}
 		}
 	}
@@ -75,15 +81,15 @@ public:
 		tiles = new Tile[size];
 	}
 
-	void setTiles(float w, float h, int r, int g, int b) {
+	void setTiles(float w, float h) {
 		for (int i = 0; i < size; i++) {
 			GLuint *a = textures.get_ids_tex_tiles();
-			Tile tile(w, h, r, g, b,textures.get_ids_tex_tiles()[0]);
+			Tile tile(w, h,textures.get_ids_tex_tiles()[0]);
 			tiles[i] = tile;
 		}
 	}
 	void setCenterTile() {
-		tiles[size / 2].setRgb(0, 255, 0);
+		tiles[size / 2].setTexture(textures.get_ids_tex_tiles()[1]);
 		tileSelected = size / 2;
 	}
 	
@@ -134,11 +140,11 @@ public:
 	void setTileGreen(int x, int y) {
 		int tilenumber = whatTileIs(x, y);
 		if (tilenumber != -1) {
-			tiles[tileSelected].setRgb(120,120,120);
+			tiles[tileSelected].setTexture(textures.get_ids_tex_tiles()[0]);
 			tileSelectedX = x;
 			tileSelectedY = y;
 			tileSelected = tilenumber;
-			tiles[tilenumber].setRgb(0,255,0);
+			tiles[tilenumber].setTexture(textures.get_ids_tex_tiles()[1]);
 		}
 	}
 	int whatTileIs(int x, int y) {

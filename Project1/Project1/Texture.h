@@ -10,7 +10,7 @@
 #include "Image.h"
 
 
-#define NUM_TEX_TILES 1
+#define NUM_TEX_TILES 2
 #define NUM_TEX_CHARARCTER 1
 #define NUM_TEX_OBJECTS 1
 
@@ -23,8 +23,8 @@ public:
 		 idsCharacters = new GLuint[NUM_TEX_CHARARCTER];
 		 idsObjects = new GLuint[NUM_TEX_OBJECTS];
 		Texture::init_tile_tex();
-		Texture::init_character_tex();
-		Texture::init_objects_tex(); 
+		//Texture::init_character_tex();
+		//Texture::init_objects_tex(); 
 		
 	}
 
@@ -55,7 +55,9 @@ private:
 	 void init_tile_tex() {
 		Image *textures[NUM_TEX_TILES];
 		int i = 0;
-		textures[i] = &Image("tile.ptm");
+
+		textures[i++] = &Image("tile.ptm");
+		textures[i++] = &Image("greentile.ptm");
 		bind_textures(idsTiles, textures, NUM_TEX_TILES);
 	}
 

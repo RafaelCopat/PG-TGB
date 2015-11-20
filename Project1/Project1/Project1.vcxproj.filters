@@ -18,12 +18,6 @@
     <ClInclude Include="Image.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Layer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Element.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tilemap.h">
       <Filter>Source Files</Filter>
     </ClInclude>

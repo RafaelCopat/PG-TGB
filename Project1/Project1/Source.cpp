@@ -10,8 +10,6 @@
 #include <cmath>
 #include <fstream>
 #include "Image.h"
-#include "Layer.h"
-#include "Element.h"
 #include "Tile.h"
 #include "Tilemap.h"
 #include "Texture.h"
@@ -55,7 +53,7 @@ void init(void)
 		}
 	}
 	tilemap.setSize(NUMBER_OF_TILES);
-	tilemap.setTiles(38,20,120,120,120);
+	tilemap.setTiles(38,20);
 	tilemap.setCenterTile();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
