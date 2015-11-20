@@ -14,8 +14,8 @@
 #include "Element.h"
 #include "Tile.h"
 #include "Tilemap.h"
+#include "Texture.h"
 
-Tilemap tilemap;
 
 #define gameWidth 342
 #define gameHeight 180
@@ -29,56 +29,26 @@ Tilemap tilemap;
 #define NORTHWEST 7
 #define SOUTHWEST 8
 
-
 Image lastScreen(gameWidth, gameHeight);
+Tilemap tilemap(gameWidth, gameHeight);
+Texture textures;
 
 void drawTileMap();
 
-void drawTile(float x, float y, float w, float h, int r, int g, int b) {
-	glColor3ub(r, g, b);
-	glVertex2d(x, y);
-	glVertex2d(x + w/2, y - h/2 );
-	glVertex2d(x, y - h);
-	glVertex2d(x - w/2, y - h/2);
 
-}
 
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	int x = gameWidth / 2 - (tilemap.getTile(0).getWidth() / 2);
-	int y = 180;
-	tilemap.setStartCoords(x, y);
-	int screenx = 0;
-	int screeny = 0;
-	int cont = 0;
-	int multiplier = 1;
-	int n = sqrt(tilemap.getSize());
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			
-			screenx = x + (j - i) * (tilemap.getTile(0).getWidth() /2);
-			screeny = y - (j + i) * (tilemap.getTile(0).getHeight() /2);
-			int tilew = tilemap.getTile(cont).getWidth();
-			int tileh = tilemap.getTile(cont).getHeight();
-			int tiler = tilemap.getTile(cont).getR();
-			int tileg = tilemap.getTile(cont).getG();
-			int tileb = tilemap.getTile(cont).getB();
-			cont++;
-			glBegin(GL_QUADS);
-			drawTile(screenx + tilew / 2, screeny, tilew, tileh, tiler, tileg, tileb);
-			glEnd();
-			glBegin(GL_LINE_LOOP);
-			drawTile(screenx + tilew / 2, screeny, tilew, tileh, 255, 255, 255);
-			glEnd();
-		}
-	}
+	tilemap.drawMap();
 	glFlush();
 
 }
 
 void init(void)
 {
+	textures.init_textures();
+	tilemap.setTextures(textures);
 	for (int i = 0; i < gameWidth; i++) {
 		for (int j = 0; j < gameHeight; j++) {
 			lastScreen.setPixelOpaco(0, 0, 0, i, j);
@@ -95,12 +65,15 @@ void init(void)
 	glLoadIdentity();
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glEnable(GL_TEXTURE_2D);
+	
 	drawTileMap();
 }
 
 void drawTileMap() {
-	
+
 	glutPostRedisplay();
+
 }
 void timer(int value)
 {

@@ -1,5 +1,10 @@
-#pragma onca
 #include "Image.h"
+#include <Windows.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 #ifndef Tile_H
 #define Tile_H
 
@@ -9,15 +14,13 @@ public:
 	Tile() {
 
 	}
-	Tile(int textura) {
-		this->textura = textura;
-	}
-	Tile(int width, int height, int r, int g, int b) {
+	Tile(int width, int height, int r, int g, int b, GLuint textura) {
 		this->width = width;
 		this->height = height;
 		this->r = r;
 		this->g = g;
 		this->b = b;
+		this->textura = textura;
 	}
 	Tile(Image image) {
 		this->image = image;
@@ -53,7 +56,7 @@ public:
 	}
 
 private:
-	int textura;
+	GLuint textura;
 	int r;
 	int g;
 	int b;

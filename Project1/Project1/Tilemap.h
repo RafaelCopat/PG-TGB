@@ -4,6 +4,7 @@
 #include "Tile.h"
 #include <string>
 #include <iostream>
+#include "Texture.h"
 #ifndef Tilemap_H
 #define Tilemap_H
 #define NORTH 1
@@ -17,10 +18,51 @@
 
 class Tilemap {
 public:
-	Tilemap() {
-
+	Tilemap(int gameWidth, int gameHeight) {
+		this->gameWidth = gameWidth;
+		this->gameHeight = gameHeight;
 	}
 
+	void drawTile(float x, float y, float w, float h, int r, int g, int b) {
+		glColor3ub(r, g, b);
+		glVertex2d(x, y);
+		glVertex2d(x + w / 2, y - h / 2);
+		glVertex2d(x, y - h);
+		glVertex2d(x - w / 2, y - h / 2);
+
+	}
+	void drawMap() {
+		int x = gameWidth / 2 - (getTile(0).getWidth() / 2);
+		int y = 180;
+		setStartCoords(x, y);
+		int screenx = 0;
+		int screeny = 0;
+		int cont = 0;
+		int multiplier = 1;
+		int n = sqrt(getSize());
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+
+				screenx = x + (j - i) * (getTile(0).getWidth() / 2);
+				screeny = y - (j + i) * (getTile(0).getHeight() / 2);
+				int tilew = getTile(cont).getWidth();
+				int tileh = getTile(cont).getHeight();
+				int tiler = getTile(cont).getR();
+				int tileg = getTile(cont).getG();
+				int tileb = getTile(cont).getB();
+				cont++;
+				glBegin(GL_QUADS);
+				drawTile(screenx + tilew / 2, screeny, tilew, tileh, tiler, tileg, tileb);
+				glEnd();
+				glBegin(GL_LINE_LOOP);
+				drawTile(screenx + tilew / 2, screeny, tilew, tileh, 255, 255, 255);
+				glEnd();
+			}
+		}
+	}
+	void setTextures(Texture textures) {
+		this->textures = textures;
+	}
 	Tile getTile(int index) {
 		return tiles[index];
 	}
@@ -35,7 +77,8 @@ public:
 
 	void setTiles(float w, float h, int r, int g, int b) {
 		for (int i = 0; i < size; i++) {
-			Tile tile(w, h, r, g, b);
+			GLuint *a = textures.get_ids_tex_tiles();
+			Tile tile(w, h, r, g, b,textures.get_ids_tex_tiles()[0]);
 			tiles[i] = tile;
 		}
 	}
@@ -117,12 +160,15 @@ public:
 	}
 private:
 	Tile * tiles;
+	Texture textures;
 	int size;
 	int tileSelectedX;
 	int tileSelectedY;
 	int tileSelected;
 	double startx;
 	double starty;
+	int gameWidth;
+	int gameHeight;
 };
 
 #endif
