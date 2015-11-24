@@ -26,6 +26,11 @@
 #define SOUTHEAST 6
 #define NORTHWEST 7
 #define SOUTHWEST 8
+#define GAME_WIN 2
+#define GAME_LOSS 1
+#define GAME_RUNNING 0
+
+int GAME_STATE = 0;
 
 Image lastScreen(gameWidth, gameHeight);
 Tilemap tilemap(gameWidth, gameHeight);
@@ -34,17 +39,17 @@ Texture textures;
 void drawTileMap();
 
 
-
 void display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	tilemap.drawMap();
-	glFlush();
+		glClear(GL_COLOR_BUFFER_BIT);
+		GAME_STATE = tilemap.drawMap();
+		glFlush();
 
 }
 
 void init(void)
 {
+	GAME_STATE = 0;
 	textures.init_textures();
 	tilemap.setTextures(textures);
 	for (int i = 0; i < gameWidth; i++) {
@@ -55,7 +60,6 @@ void init(void)
 	tilemap.setSize(NUMBER_OF_TILES);
 	tilemap.setTiles(100, 50);
 	tilemap.drawMap();
-	tilemap.setCenterTile();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, gameWidth, gameHeight);
@@ -82,41 +86,45 @@ void timer(int value)
 }
 
 void keyboard(unsigned char key, int x, int y) {
-	switch (key) {
-	case '8':
-		tilemap.tilewalk(NORTH);
-		break;
-	case '2':
-		tilemap.tilewalk(SOUTH);
-		break;
-	case '6':
-		tilemap.tilewalk(EAST);
-		break;
-	case '4':
-		tilemap.tilewalk(WEST);
-		break;
-	case '9':
-		tilemap.tilewalk(NORTHEAST);
-		break;
-	case '3':
-		tilemap.tilewalk(SOUTHEAST);
-		break;
-	case '7':
-		tilemap.tilewalk(NORTHWEST);
-		break;
-	case '1':
-		tilemap.tilewalk(SOUTHWEST);
-		break;
-	default:
-		break;
+	if (GAME_STATE == 0) {
+		switch (key) {
+		case '8':
+			tilemap.tilewalk(NORTH);
+			break;
+		case '2':
+			tilemap.tilewalk(SOUTH);
+			break;
+		case '6':
+			tilemap.tilewalk(EAST);
+			break;
+		case '4':
+			tilemap.tilewalk(WEST);
+			break;
+		case '9':
+			tilemap.tilewalk(NORTHEAST);
+			break;
+		case '3':
+			tilemap.tilewalk(SOUTHEAST);
+			break;
+		case '7':
+			tilemap.tilewalk(NORTHWEST);
+			break;
+		case '1':
+			tilemap.tilewalk(SOUTHWEST);
+			break;
+		default:
+			break;
+		}
+		drawTileMap();
 	}
-	drawTileMap();
 }
 
 void mouse(int button, int state, int x, int y) {
-	if (GLUT_LEFT_BUTTON == button && state == GLUT_DOWN) {
-		tilemap.mouseMap(x, y);
-		drawTileMap();
+	if (GAME_STATE == 0) {
+		if (GLUT_LEFT_BUTTON == button && state == GLUT_DOWN) {
+			tilemap.mouseMap(x, y);
+			drawTileMap();
+		}
 	}
 }
 

@@ -67,6 +67,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Element.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tile.h" />

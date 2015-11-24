@@ -18,6 +18,7 @@ public:
 		this->width = width;
 		this->height = height;
 		this->texture = texture;
+		this->visible = false;
 	}
 	int getHeight() {
 		return height;
@@ -32,11 +33,18 @@ public:
 	void setTexture(GLuint texture) {
 		this->texture = texture;
 	}
+	boolean isVisible() {
+		return visible;
+	}
+	void setVisible() {
+		visible = true;
+	}
 
 private:
 	GLuint texture;
 	int width;
 	int height;
+	boolean visible;
 };
 
 #endif

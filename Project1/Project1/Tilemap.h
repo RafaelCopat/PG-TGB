@@ -4,6 +4,7 @@
 #include "Tile.h"
 #include <string>
 #include <iostream>
+#include "Element.h"
 #include "Texture.h"
 #ifndef Tilemap_H
 #define Tilemap_H
@@ -15,13 +16,21 @@
 #define SOUTHEAST 6
 #define NORTHWEST 7
 #define SOUTHWEST 8
+#define GAME_WIN 2
+#define GAME_LOSS 1
+#define GAME_RUNNING 0
+GLuint BOMB_TEXTURE = 2;
+GLuint CHEST_TEXTURE = 3;
 
 class Tilemap {
 public:
 	Tilemap(int gameWidth, int gameHeight) {
 		this->gameWidth = gameWidth;
 		this->gameHeight = gameHeight;
-		characterTexture = 3;
+		loadCharacter();
+	}
+	void loadCharacter() {
+		Element character();
 	}
 
 	void drawRect(float x, float y, float w, float h){
@@ -47,7 +56,7 @@ public:
 		glVertex2d(x - w / 2, y - h / 2);
 
 	}
-	void drawMap() {
+	int drawMap() {
 		int x = gameWidth / 2 - (getTile(0).getWidth() / 2);
 		int y = gameHeight;
 		setStartCoords(x, y);
@@ -62,14 +71,28 @@ public:
 				screeny = y - (j + i) * (getTile(0).getHeight() / 2);
 				int tilew = getTile(cont).getWidth();
 				int tileh = getTile(cont).getHeight();
-				glBindTexture(GL_TEXTURE_2D, getTile(cont).getTextura());
+				if (getTile(cont).isVisible()) {
+					glBindTexture(GL_TEXTURE_2D, getTile(cont).getTextura());
+				}
+				else {
+					glBindTexture(GL_TEXTURE_2D, textures.getIds()[0]);
+				}
 				glBegin(GL_QUADS);
 				drawTile(screenx + tilew / 2, screeny, tilew, tileh);
 				glEnd();
 				cont++;
 			}
 		}
+		int GAME_STATE = 0;
+		if (tiles[tileSelected].getTextura() == BOMB_TEXTURE) {
+			character.setTexture(12);
+			GAME_STATE = GAME_LOSS;
+		}
+		else if (tiles[tileSelected].getTextura() == CHEST_TEXTURE) {
+			GAME_STATE = GAME_WIN;
+		}
 		drawCharacter();
+		return GAME_STATE;
 	}
 	void setTextures(Texture textures) {
 		this->textures = textures;
@@ -88,24 +111,32 @@ public:
 
 	void setTiles(float w, float h) {
 		for (int i = 0; i < size; i++) {
-			GLuint *a = textures.get_ids_tex_tiles();
-			Tile tile(w, h, textures.get_ids_tex_tiles()[0]);
+			GLuint *a = textures.getIds();
+			Tile tile(w, h, textures.getIds()[rand()%2]);
 			tiles[i] = tile;
 		}
+		setToCenterTile();
+		setTreasure();
+		tiles[size / 2].setTexture(textures.getIds()[0]);
 	}
-	void setCenterTile() {
-		//tiles[size / 2].setTexture(textures.get_ids_tex_tiles()[1]);
-		//tileSelected = size / 2;
-		tileSelectedX = tiles[0].getWidth() * (sqrt(size)/2);
+	void setTreasure() {
+		int tilenumber;
+		do {
+			tilenumber = rand() % size;
+		} while (tilenumber == size / 2);
+		tiles[rand() % size].setTexture(textures.getIds()[2]);
+	
+	}
+	void setToCenterTile() {
+		tileSelectedX = tiles[0].getWidth() * (sqrt(size) / 2);
 		tileSelectedY = tiles[0].getHeight() * (sqrt(size) / 2);
 		tileSelected = size / 2;
-		setTileGreen(tileSelectedX, tileSelectedY);
 	}
 
 	void drawCharacter(){
-		glBindTexture(GL_TEXTURE_2D, textures.get_ids_tex_tiles()[characterTexture]);
+		glBindTexture(GL_TEXTURE_2D, character.getTexture());
 		glBegin(GL_QUADS);
-		drawRect(tileSelectedX - 40, starty - tileSelectedY - tiles[0].getHeight()/2, 80, 160);
+		drawRect(tileSelectedX - 30, starty - tileSelectedY - tiles[0].getHeight()/2, 60,120);
 		glEnd();
 	}
 	void tilewalk(const int DIRECTION) {
@@ -117,63 +148,69 @@ public:
 		case NORTH:
 			newTileY = tileSelectedY - h;
 			newTileX = tileSelectedX;
-			characterTexture = 2;
+			character.setTexture(4);
 			break;
 		case SOUTH:
 			newTileX = tileSelectedX;
 			newTileY = tileSelectedY + h;
-			characterTexture = 3;
+			character.setTexture(5);
 			break;
 		case EAST:
 			newTileX = tileSelectedX + w;
 			newTileY = tileSelectedY;
-			characterTexture = 4;
+			character.setTexture(6);
 			break;
 		case WEST:
 			newTileX = tileSelectedX - w;
 			newTileY = tileSelectedY;
-			characterTexture = 5;
+			character.setTexture(7);
 			break;
 		case NORTHEAST:
 			newTileX = tileSelectedX + w / 2;
 			newTileY = tileSelectedY - h / 2;
-			characterTexture = 6;
+			character.setTexture(8);
 			break;
 		case SOUTHEAST:
 			newTileX = tileSelectedX + w / 2;
 			newTileY = tileSelectedY + h / 2;
-			characterTexture = 7;
+			character.setTexture(9);
 			break;
 		case NORTHWEST:
 			newTileX = tileSelectedX - w / 2;
 			newTileY = tileSelectedY - h / 2;
-			characterTexture = 8;
+			character.setTexture(10);
 			break;
 		case SOUTHWEST:
 			newTileX = tileSelectedX - w / 2;
 			newTileY = tileSelectedY + h / 2;
-			characterTexture = 9;
+			character.setTexture(11);
 			break;
 		}
-		setTileGreen(newTileX, newTileY);
+		int tilenumber = whatTileIs(newTileX, newTileY);
+		if (tilenumber != -1) {
+			tileSelectedX = newTileX;
+			tileSelectedY = newTileY;
+			tileSelected = tilenumber;
+		}
 	}
 	int getSize() {
 		return size;
 	}
 	
-	void setTileGreen(int x, int y) {
+	void selectTile(int x, int y) {
 		int tilenumber = whatTileIs(x, y);
 		if (tilenumber != -1) {
-			tiles[tileSelected].setTexture(textures.get_ids_tex_tiles()[0]);
 			tileSelectedX = x;
 			tileSelectedY = y;
 			tileSelected = tilenumber;
-			tiles[tilenumber].setTexture(textures.get_ids_tex_tiles()[1]);
 		}
 	}
 
 	void mouseMap(int x, int y){
-		setTileGreen(x, y);
+		int tilenumber = whatTileIs(x, y);
+		if (tilenumber != -1) {
+			tiles[tilenumber].setVisible();
+		}
 	}
 	int whatTileIs(int x, int y) {
 		double halfwidth = tiles[0].getWidth() / 2;
@@ -203,7 +240,7 @@ private:
 	double starty;
 	int gameWidth;
 	int gameHeight;
-	int characterTexture;
+	Element character;
 };
 
 #endif

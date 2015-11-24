@@ -10,7 +10,7 @@
 #include "Image.h"
 
 
-#define NUM_TEX 10
+#define NUM_TEX 12
 
 class Texture {
 
@@ -18,20 +18,20 @@ class Texture {
 public:
 	void init_textures() {
 		idsTiles = new GLuint[NUM_TEX];
-		Texture::init_tile_tex();
+		Texture::initTextures();
 
 	}
 
-	GLuint *get_ids_tex_tiles() {
+	GLuint *getIds() {
 		return idsTiles;
 	}
 
 
 private:
 
-	void bind_textures(GLuint *ids, Image **textures, int num_textures) {
-		glGenTextures(num_textures, ids);
-		for (int i = 0; i < num_textures; i++) {
+	void bindTextures(GLuint *ids, Image **textures, int numTextures) {
+		glGenTextures(numTextures, ids);
+		for (int i = 0; i < numTextures; i++) {
 			glBindTexture(GL_TEXTURE_2D, ids[i]);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -39,12 +39,13 @@ private:
 		}
 	}
 
-	void init_tile_tex() {
+	void initTextures() {
 		Image *textures[NUM_TEX];
 		int i = 0;
 
 		textures[i++] = &Image("tile.ptm");
-		textures[i++] = &Image("greentile.ptm");
+		textures[i++] = &Image("bomb.ptm");
+		textures[i++] = &Image("chest.ptm");
 		textures[i++] = &Image("parado_norte.ptm");
 		textures[i++] = &Image("parado_sul.ptm");
 		textures[i++] = &Image("parado_leste.ptm");
@@ -53,7 +54,8 @@ private:
 		textures[i++] = &Image("parado_sudeste.ptm");
 		textures[i++] = &Image("parado_noroeste.ptm");
 		textures[i++] = &Image("parado_sudoeste.ptm");
-		bind_textures(idsTiles, textures, NUM_TEX);
+		textures[i++] = &Image("dead.ptm");
+		bindTextures(idsTiles, textures, NUM_TEX);
 	}
 
 private:
