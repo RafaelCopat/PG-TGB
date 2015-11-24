@@ -10,7 +10,7 @@
 #include "Image.h"
 
 
-#define NUM_TEX 12
+#define NUM_TEX 13
 
 class Texture {
 
@@ -55,6 +55,7 @@ private:
 		textures[i++] = &Image("parado_noroeste.ptm");
 		textures[i++] = &Image("parado_sudoeste.ptm");
 		textures[i++] = &Image("dead.ptm");
+		textures[i++] = &Image("cursor.ptm");
 		bindTextures(idsTiles, textures, NUM_TEX);
 	}
 

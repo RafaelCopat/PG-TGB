@@ -19,15 +19,20 @@
 #define GAME_WIN 2
 #define GAME_LOSS 1
 #define GAME_RUNNING 0
+#define INIT_NUMBER_OF_CLICKS 2
 GLuint BOMB_TEXTURE = 2;
 GLuint CHEST_TEXTURE = 3;
 
 class Tilemap {
 public:
+	Tilemap() {
+
+	}
 	Tilemap(int gameWidth, int gameHeight) {
 		this->gameWidth = gameWidth;
 		this->gameHeight = gameHeight;
 		loadCharacter();
+		numberOfClicks = INIT_NUMBER_OF_CLICKS;
 	}
 	void loadCharacter() {
 		Element character();
@@ -91,6 +96,7 @@ public:
 		else if (tiles[tileSelected].getTextura() == CHEST_TEXTURE) {
 			GAME_STATE = GAME_WIN;
 		}
+		drawCursors();
 		drawCharacter();
 		return GAME_STATE;
 	}
@@ -140,6 +146,9 @@ public:
 		glEnd();
 	}
 	void tilewalk(const int DIRECTION) {
+
+		//TODO - THERE IS NO TURNING BACK - player can go and go back to get more clicks
+		//if he visits a place that he already visited, he don't gain clicks
 		int w = tiles[0].getWidth();
 		int h = tiles[0].getHeight();
 		int newTileX = 0;
@@ -192,6 +201,7 @@ public:
 			tileSelectedY = newTileY;
 			tileSelected = tilenumber;
 		}
+		numberOfClicks = INIT_NUMBER_OF_CLICKS;
 	}
 	int getSize() {
 		return size;
@@ -206,10 +216,21 @@ public:
 		}
 	}
 
-	void mouseMap(int x, int y){
-		int tilenumber = whatTileIs(x, y);
+	void mouseMap(int x, int y) {
+		if (numberOfClicks > 0){
+			int tilenumber = whatTileIs(x, y);
 		if (tilenumber != -1) {
 			tiles[tilenumber].setVisible();
+		}
+		numberOfClicks--;
+	}		
+	}
+	void drawCursors() {
+		for (int i = 1; i <= numberOfClicks; i++) {
+			glBindTexture(GL_TEXTURE_2D, 13);
+			glBegin(GL_QUADS);
+			drawRect(30*i, 0, 30, 45);
+			glEnd();
 		}
 	}
 	int whatTileIs(int x, int y) {
@@ -240,6 +261,7 @@ private:
 	double starty;
 	int gameWidth;
 	int gameHeight;
+	int numberOfClicks;
 	Element character;
 };
 

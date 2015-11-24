@@ -33,33 +33,41 @@
 int GAME_STATE = 0;
 
 Image lastScreen(gameWidth, gameHeight);
-Tilemap tilemap(gameWidth, gameHeight);
+Tilemap tilemap[1];
 Texture textures;
 
 void drawTileMap();
 
+void restart() {
+	
+	Tilemap map(gameWidth, gameHeight);
+	tilemap[0] = map;
+	GAME_STATE = 0;
+	tilemap[0].setTextures(textures);
+	tilemap[0].setSize(NUMBER_OF_TILES);
+	tilemap[0].setTiles(100, 50);
+	tilemap[0].drawMap();
+	drawTileMap();
+}
 
 void display(void)
 {
 		glClear(GL_COLOR_BUFFER_BIT);
-		GAME_STATE = tilemap.drawMap();
+		GAME_STATE = tilemap[0].drawMap();
 		glFlush();
 
 }
 
 void init(void)
 {
+	Tilemap map(gameWidth, gameHeight);
+	tilemap[0] = map;
 	GAME_STATE = 0;
 	textures.init_textures();
-	tilemap.setTextures(textures);
-	for (int i = 0; i < gameWidth; i++) {
-		for (int j = 0; j < gameHeight; j++) {
-			lastScreen.setPixelOpaco(0, 0, 0, i, j);
-		}
-	}
-	tilemap.setSize(NUMBER_OF_TILES);
-	tilemap.setTiles(100, 50);
-	tilemap.drawMap();
+	tilemap[0].setTextures(textures);
+	tilemap[0].setSize(NUMBER_OF_TILES);
+	tilemap[0].setTiles(100, 50);
+	tilemap[0].drawMap();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, gameWidth, gameHeight);
@@ -89,40 +97,43 @@ void keyboard(unsigned char key, int x, int y) {
 	if (GAME_STATE == 0) {
 		switch (key) {
 		case '8':
-			tilemap.tilewalk(NORTH);
+			tilemap[0].tilewalk(NORTH);
 			break;
 		case '2':
-			tilemap.tilewalk(SOUTH);
+			tilemap[0].tilewalk(SOUTH);
 			break;
 		case '6':
-			tilemap.tilewalk(EAST);
+			tilemap[0].tilewalk(EAST);
 			break;
 		case '4':
-			tilemap.tilewalk(WEST);
+			tilemap[0].tilewalk(WEST);
 			break;
 		case '9':
-			tilemap.tilewalk(NORTHEAST);
+			tilemap[0].tilewalk(NORTHEAST);
 			break;
 		case '3':
-			tilemap.tilewalk(SOUTHEAST);
+			tilemap[0].tilewalk(SOUTHEAST);
 			break;
 		case '7':
-			tilemap.tilewalk(NORTHWEST);
+			tilemap[0].tilewalk(NORTHWEST);
 			break;
 		case '1':
-			tilemap.tilewalk(SOUTHWEST);
+			tilemap[0].tilewalk(SOUTHWEST);
 			break;
 		default:
 			break;
 		}
 		drawTileMap();
 	}
+	if (key == '0') {
+		restart();
+	}
 }
 
 void mouse(int button, int state, int x, int y) {
 	if (GAME_STATE == 0) {
 		if (GLUT_LEFT_BUTTON == button && state == GLUT_DOWN) {
-			tilemap.mouseMap(x, y);
+			tilemap[0].mouseMap(x, y);
 			drawTileMap();
 		}
 	}
