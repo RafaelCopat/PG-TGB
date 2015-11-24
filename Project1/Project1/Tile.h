@@ -25,7 +25,7 @@ public:
 	int getWidth() {
 		return width;
 	}
-	
+
 	GLuint getTextura() {
 		return texture;
 	}

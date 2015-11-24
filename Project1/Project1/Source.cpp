@@ -15,8 +15,8 @@
 #include "Texture.h"
 
 
-#define gameWidth 342
-#define gameHeight 180
+#define gameWidth 900
+#define gameHeight 450
 #define NUMBER_OF_TILES 81
 #define NORTH 1
 #define EAST 2
@@ -53,18 +53,20 @@ void init(void)
 		}
 	}
 	tilemap.setSize(NUMBER_OF_TILES);
-	tilemap.setTiles(38,20);
+	tilemap.setTiles(100, 50);
+	tilemap.drawMap();
 	tilemap.setCenterTile();
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glViewport(0, 0, gameWidth, gameHeight);
-	gluOrtho2D(0, gameWidth, 0, gameHeight );
+	gluOrtho2D(0, gameWidth, 0, gameHeight);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_TEXTURE_2D);
-	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	drawTileMap();
 }
 
@@ -110,19 +112,13 @@ void keyboard(unsigned char key, int x, int y) {
 	}
 	drawTileMap();
 }
-void mousemap(int x, int y, int &c, int &l) {
-	int a = 0;
-	l = y / (tilemap.getTile(0).getWidth() / 2);
-
-}
 
 void mouse(int button, int state, int x, int y) {
 	if (GLUT_LEFT_BUTTON == button && state == GLUT_DOWN) {
-	tilemap.setTileGreen(x, y);
-	drawTileMap();
-    }
+		tilemap.mouseMap(x, y);
+		drawTileMap();
+	}
 }
-
 
 
 int main(int argc, char** argv) {

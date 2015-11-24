@@ -10,39 +10,26 @@
 #include "Image.h"
 
 
-#define NUM_TEX_TILES 2
-#define NUM_TEX_CHARARCTER 1
-#define NUM_TEX_OBJECTS 1
+#define NUM_TEX 10
 
 class Texture {
 
 
 public:
-	 void init_textures() {
-		 idsTiles = new GLuint[NUM_TEX_TILES];
-		 idsCharacters = new GLuint[NUM_TEX_CHARARCTER];
-		 idsObjects = new GLuint[NUM_TEX_OBJECTS];
+	void init_textures() {
+		idsTiles = new GLuint[NUM_TEX];
 		Texture::init_tile_tex();
-		//Texture::init_character_tex();
-		//Texture::init_objects_tex(); 
-		
+
 	}
 
-	 GLuint *get_ids_tex_tiles() {
+	GLuint *get_ids_tex_tiles() {
 		return idsTiles;
 	}
 
-	 GLuint *get_ids_tex_character() {
-		return idsCharacters;
-	}
-
-	 GLuint *get_ids_tex_objects() {
-		return idsObjects;
-	}
 
 private:
 
-	 void bind_textures(GLuint *ids, Image **textures, int num_textures) {
+	void bind_textures(GLuint *ids, Image **textures, int num_textures) {
 		glGenTextures(num_textures, ids);
 		for (int i = 0; i < num_textures; i++) {
 			glBindTexture(GL_TEXTURE_2D, ids[i]);
@@ -52,33 +39,26 @@ private:
 		}
 	}
 
-	 void init_tile_tex() {
-		Image *textures[NUM_TEX_TILES];
+	void init_tile_tex() {
+		Image *textures[NUM_TEX];
 		int i = 0;
 
 		textures[i++] = &Image("tile.ptm");
 		textures[i++] = &Image("greentile.ptm");
-		bind_textures(idsTiles, textures, NUM_TEX_TILES);
-	}
-
-	 void init_character_tex() {
-		Image *textures[NUM_TEX_CHARARCTER];
-		int i = 0;
-		
-		//bind_textures(idsCharacters, textures, NUM_TEX_CHARARCTER);
-	}
-
-	 void init_objects_tex() {
-		Image *textures[NUM_TEX_OBJECTS];
-		int i = 0;
-
-		//bind_textures(idsObjects, textures, NUM_TEX_OBJECTS);
+		textures[i++] = &Image("parado_norte.ptm");
+		textures[i++] = &Image("parado_sul.ptm");
+		textures[i++] = &Image("parado_leste.ptm");
+		textures[i++] = &Image("parado_oeste.ptm");
+		textures[i++] = &Image("parado_nordeste.ptm");
+		textures[i++] = &Image("parado_sudeste.ptm");
+		textures[i++] = &Image("parado_noroeste.ptm");
+		textures[i++] = &Image("parado_sudoeste.ptm");
+		bind_textures(idsTiles, textures, NUM_TEX);
 	}
 
 private:
-	 GLuint *idsTiles;
-	 GLuint *idsCharacters;
-	 GLuint *idsObjects;
+	GLuint *idsTiles;
+	
 
 };
 
