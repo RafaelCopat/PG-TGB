@@ -40,6 +40,7 @@ public:
 		loadExplosion();
 		explosion.setState(1);
 		numberOfClicks = INIT_NUMBER_OF_CLICKS;
+		outOfBounds = 0;
 	}
 	void loadCharacter() {
 		Element character();
@@ -184,7 +185,7 @@ public:
 		drawRect(tileSelectedX - 30, starty - tileSelectedY - tiles[0].getHeight()/2, 60,120);
 		glEnd();
 	}
-	boolean wouldGoOutOfBounds(int DIRECTION) {
+	int wouldGoOutOfBounds(int DIRECTION) {
 		int w = tiles[0].getWidth();
 		int h = tiles[0].getHeight();
 		double newTileX = 0;
@@ -192,46 +193,52 @@ public:
 		switch (DIRECTION) {
 			
 		case NORTH:
-			newTileY = tileSelectedY - h /2.5;
+			newTileY = tileSelectedY - h ;
 			newTileX = tileSelectedX;
 			break;
 		case SOUTH:
 			newTileX = tileSelectedX;
-			newTileY = tileSelectedY + h / 2.5;
+			newTileY = tileSelectedY + h ;
 			break;
 		case EAST:
-			newTileX = tileSelectedX + w / 2.5;
+			newTileX = tileSelectedX + w ;
 			newTileY = tileSelectedY;
 			break;
 		case WEST:
-			newTileX = tileSelectedX - w / 2.5;
+			newTileX = tileSelectedX - w ;
 			newTileY = tileSelectedY;
 			break;
 		case NORTHEAST:
-			newTileX = tileSelectedX + (w / 2) / 2.5;
-			newTileY = tileSelectedY - (h / 2) / 2.5;
+			newTileX = tileSelectedX + (w / 2) ;
+			newTileY = tileSelectedY - (h / 2) ;
 			break;
 		case SOUTHEAST:
-			newTileX = tileSelectedX + (w / 2) / 2.5;
-			newTileY = tileSelectedY + (h / 2) / 2.5;
+			newTileX = tileSelectedX + (w / 2) ;
+			newTileY = tileSelectedY + (h / 2) ;
 			break;
 		case NORTHWEST:
-			newTileX = tileSelectedX - (w / 2) / 2.5;
-			newTileY = tileSelectedY - (h / 2) / 2.5;
+			newTileX = tileSelectedX - (w / 2) ;
+			newTileY = tileSelectedY - (h / 2) ;
 			break;
 		case SOUTHWEST:
-			newTileX = tileSelectedX - (w / 2) / 2.5;
-			newTileY = tileSelectedY + (h / 2) / 2.5;
+			newTileX = tileSelectedX - (w / 2) ;
+			newTileY = tileSelectedY + (h / 2) ;
 			break;
 		}
 		int tilenumber = whatTileIs(newTileX, newTileY);
 		if (tilenumber == -1) {	
-			return true;
+			return 1;
 		}
-		return false;
+		return 0;
 	}
-	void tilewalk(int DIRECTION) {
-		if (!wouldGoOutOfBounds(DIRECTION)) {
+	int tilewalk(int DIRECTION, int firstPassing) {
+		if (firstPassing == 1) {
+			if ((wouldGoOutOfBounds(DIRECTION)) == 1) {
+				outOfBounds = 1;
+				return outOfBounds;
+			}
+		}
+		if (outOfBounds == 0) {
 			int w = tiles[0].getWidth();
 			int h = tiles[0].getHeight();
 			int newTileX = 0;
@@ -289,6 +296,7 @@ public:
 			}
 			tiles[tileSelected].setVisited();
 			tiles[tileSelected].setVisible();
+			return outOfBounds;
 		}
 	}
 	int getSize() {
@@ -321,6 +329,9 @@ public:
 			glEnd();
 		}
 	}
+	void reSetOutOfBounds() {
+		outOfBounds = 0;
+	}
 	int whatTileIs(int x, int y) {
 		double halfwidth = tiles[0].getWidth() / 2;
 		double halfheight = tiles[0].getHeight() / 2;
@@ -342,7 +353,7 @@ private:
 	Tile * tiles;
 	Texture textures;
 	int size;
-	
+	int outOfBounds;
 	double startx;
 	double starty;
 	int gameWidth;

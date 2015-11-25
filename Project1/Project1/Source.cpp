@@ -92,20 +92,24 @@ void drawTileMap() {
 }
 void timer(int value)
 {
+	int outOfBounds;
 	glutPostRedisplay();
 	if (value < 5 && GAME_STATE == GAME_RUNNING) {
-		tilemap[0].tilewalk(DIRECTION);
+		outOfBounds = tilemap[0].tilewalk(DIRECTION,value + 1);
+		if (outOfBounds == 1) {
+			value = 5;
+			tilemap[0].reSetOutOfBounds();
+			animating = 0;
+		}
 		glutTimerFunc(120, timer, ++value);
 	}
-	if (value == 5) {
+	if (value >= 5) {
 		animating = 0;
 	}
 	if (GAME_STATE == GAME_LOSS) {
 		if (value < 19) {
 			tilemap[0].explode();
-			glutTimerFunc(150, timer, ++value);
-	
-			
+			glutTimerFunc(100, timer, ++value);		
 		}
 	}
 	
