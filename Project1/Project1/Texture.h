@@ -9,8 +9,7 @@
 #include <GL/glut.h>
 #include "Image.h"
 
-
-#define NUM_TEX 13
+#define NUM_TEX 14
 
 class Texture {
 
@@ -42,7 +41,6 @@ private:
 	void initTextures() {
 		Image *textures[NUM_TEX];
 		int i = 0;
-
 		textures[i++] = &Image("tile.ptm");
 		textures[i++] = &Image("bomb.ptm");
 		textures[i++] = &Image("chest.ptm");
@@ -56,6 +54,7 @@ private:
 		textures[i++] = &Image("parado_sudoeste.ptm");
 		textures[i++] = &Image("dead.ptm");
 		textures[i++] = &Image("cursor.ptm");
+		textures[i++] = &Image("explode.ptm");
 		bindTextures(idsTiles, textures, NUM_TEX);
 	}
 

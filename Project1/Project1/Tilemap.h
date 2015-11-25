@@ -23,6 +23,11 @@
 GLuint BOMB_TEXTURE = 2;
 GLuint CHEST_TEXTURE = 3;
 
+int tileSelectedX;
+int tileSelectedY;
+int tileSelected;
+int GAME_STATE = 0;
+
 class Tilemap {
 public:
 	Tilemap() {
@@ -32,10 +37,15 @@ public:
 		this->gameWidth = gameWidth;
 		this->gameHeight = gameHeight;
 		loadCharacter();
+		loadExplosion();
+		explosion.setState(1);
 		numberOfClicks = INIT_NUMBER_OF_CLICKS;
 	}
 	void loadCharacter() {
 		Element character();
+	}
+	void loadExplosion() {
+		Element explosion();
 	}
 
 	void drawRect(float x, float y, float w, float h){
@@ -88,9 +98,9 @@ public:
 				cont++;
 			}
 		}
-		int GAME_STATE = 0;
 		if (tiles[tileSelected].getTextura() == BOMB_TEXTURE) {
 			character.setTexture(12);
+			drawExplosion();
 			GAME_STATE = GAME_LOSS;
 		}
 		else if (tiles[tileSelected].getTextura() == CHEST_TEXTURE) {
@@ -102,6 +112,34 @@ public:
 	}
 	void setTextures(Texture textures) {
 		this->textures = textures;
+	}
+	void explode(){
+
+		int state = explosion.getState();
+		if (state > 15) {
+			state = 15;
+		}
+		explosion.setState(++state);
+	}
+	void drawExplosion() {
+		int state = explosion.getState();
+		int x = tileSelectedX - 50;
+		int y = starty - tileSelectedY - 25;
+		int w = 100;
+		int h = 100;
+		double coordy = ((state - 1) / 4)*0.25;
+		double coordx = ((state - 1) % 4)*0.25;
+		glBindTexture(GL_TEXTURE_2D, 14);
+		glBegin(GL_QUADS);
+		glTexCoord2f(coordx, coordy);
+		glVertex2d(x, y);
+		glTexCoord2f(coordx, coordy + 0.25);
+		glVertex2d(x, y + h);
+		glTexCoord2f(coordx + 0.25, coordy + 0.25);
+		glVertex2d(x + w, y + h);
+		glTexCoord2f(coordx + 0.25, coordy);
+		glVertex2d(x + w, y);
+		glEnd();
 	}
 	Tile getTile(int index) {
 		return tiles[index];
@@ -137,6 +175,7 @@ public:
 		tileSelectedX = tiles[0].getWidth() * (sqrt(size) / 2);
 		tileSelectedY = tiles[0].getHeight() * (sqrt(size) / 2);
 		tileSelected = size / 2;
+		tiles[size / 2].setVisited();
 	}
 
 	void drawCharacter(){
@@ -145,63 +184,112 @@ public:
 		drawRect(tileSelectedX - 30, starty - tileSelectedY - tiles[0].getHeight()/2, 60,120);
 		glEnd();
 	}
-	void tilewalk(const int DIRECTION) {
-
-		//TODO - THERE IS NO TURNING BACK - player can go and go back to get more clicks
-		//if he visits a place that he already visited, he don't gain clicks
+	boolean wouldGoOutOfBounds(int DIRECTION) {
 		int w = tiles[0].getWidth();
 		int h = tiles[0].getHeight();
-		int newTileX = 0;
-		int newTileY = 0;
+		double newTileX = 0;
+		double newTileY = 0;
 		switch (DIRECTION) {
+			
 		case NORTH:
-			newTileY = tileSelectedY - h;
+			newTileY = tileSelectedY - h /2.5;
 			newTileX = tileSelectedX;
-			character.setTexture(4);
 			break;
 		case SOUTH:
 			newTileX = tileSelectedX;
-			newTileY = tileSelectedY + h;
-			character.setTexture(5);
+			newTileY = tileSelectedY + h / 2.5;
 			break;
 		case EAST:
-			newTileX = tileSelectedX + w;
+			newTileX = tileSelectedX + w / 2.5;
 			newTileY = tileSelectedY;
-			character.setTexture(6);
 			break;
 		case WEST:
-			newTileX = tileSelectedX - w;
+			newTileX = tileSelectedX - w / 2.5;
 			newTileY = tileSelectedY;
-			character.setTexture(7);
 			break;
 		case NORTHEAST:
-			newTileX = tileSelectedX + w / 2;
-			newTileY = tileSelectedY - h / 2;
-			character.setTexture(8);
+			newTileX = tileSelectedX + (w / 2) / 2.5;
+			newTileY = tileSelectedY - (h / 2) / 2.5;
 			break;
 		case SOUTHEAST:
-			newTileX = tileSelectedX + w / 2;
-			newTileY = tileSelectedY + h / 2;
-			character.setTexture(9);
+			newTileX = tileSelectedX + (w / 2) / 2.5;
+			newTileY = tileSelectedY + (h / 2) / 2.5;
 			break;
 		case NORTHWEST:
-			newTileX = tileSelectedX - w / 2;
-			newTileY = tileSelectedY - h / 2;
-			character.setTexture(10);
+			newTileX = tileSelectedX - (w / 2) / 2.5;
+			newTileY = tileSelectedY - (h / 2) / 2.5;
 			break;
 		case SOUTHWEST:
-			newTileX = tileSelectedX - w / 2;
-			newTileY = tileSelectedY + h / 2;
-			character.setTexture(11);
+			newTileX = tileSelectedX - (w / 2) / 2.5;
+			newTileY = tileSelectedY + (h / 2) / 2.5;
 			break;
 		}
 		int tilenumber = whatTileIs(newTileX, newTileY);
-		if (tilenumber != -1) {
-			tileSelectedX = newTileX;
-			tileSelectedY = newTileY;
-			tileSelected = tilenumber;
+		if (tilenumber == -1) {	
+			return true;
 		}
-		numberOfClicks = INIT_NUMBER_OF_CLICKS;
+		return false;
+	}
+	void tilewalk(int DIRECTION) {
+		if (!wouldGoOutOfBounds(DIRECTION)) {
+			int w = tiles[0].getWidth();
+			int h = tiles[0].getHeight();
+			int newTileX = 0;
+			int newTileY = 0;
+			switch (DIRECTION) {
+			case NORTH:
+				newTileY = tileSelectedY - h / 5;
+				newTileX = tileSelectedX;
+				character.setTexture(4);
+				break;
+			case SOUTH:
+				newTileX = tileSelectedX;
+				newTileY = tileSelectedY + h / 5;
+				character.setTexture(5);
+				break;
+			case EAST:
+				newTileX = tileSelectedX + w / 5;
+				newTileY = tileSelectedY;
+				character.setTexture(6);
+				break;
+			case WEST:
+				newTileX = tileSelectedX - w / 5;
+				newTileY = tileSelectedY;
+				character.setTexture(7);
+				break;
+			case NORTHEAST:
+				newTileX = tileSelectedX + (w / 2) / 5;
+				newTileY = tileSelectedY - (h / 2) / 5;
+				character.setTexture(8);
+				break;
+			case SOUTHEAST:
+				newTileX = tileSelectedX + (w / 2) / 5;
+				newTileY = tileSelectedY + (h / 2) / 5;
+				character.setTexture(9);
+				break;
+			case NORTHWEST:
+				newTileX = tileSelectedX - (w / 2) / 5;
+				newTileY = tileSelectedY - (h / 2) / 5;
+				character.setTexture(10);
+				break;
+			case SOUTHWEST:
+				newTileX = tileSelectedX - (w / 2) / 5;
+				newTileY = tileSelectedY + (h / 2) / 5;
+				character.setTexture(11);
+				break;
+			}
+			int tilenumber = whatTileIs(newTileX, newTileY);
+			if (tilenumber != -1) {
+				tileSelectedX = newTileX;
+				tileSelectedY = newTileY;
+				tileSelected = tilenumber;
+			}
+			if (!tiles[tileSelected].isVisited()) {
+				numberOfClicks = INIT_NUMBER_OF_CLICKS;
+			}
+			tiles[tileSelected].setVisited();
+			tiles[tileSelected].setVisible();
+		}
 	}
 	int getSize() {
 		return size;
@@ -254,14 +342,13 @@ private:
 	Tile * tiles;
 	Texture textures;
 	int size;
-	int tileSelectedX;
-	int tileSelectedY;
-	int tileSelected;
+	
 	double startx;
 	double starty;
 	int gameWidth;
 	int gameHeight;
 	int numberOfClicks;
+	Element explosion;
 	Element character;
 };
 

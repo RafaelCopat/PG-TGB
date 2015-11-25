@@ -14,6 +14,12 @@ public:
 	void setTexture(int texture) {
 		this->texture = texture;
 	}
+	int getState() {
+		return state;
+	}
+	void setState(int state) {
+		this->state = state;
+	}
 
 private:
 	int texture;

@@ -30,7 +30,9 @@
 #define GAME_LOSS 1
 #define GAME_RUNNING 0
 
-int GAME_STATE = 0;
+int animating = 0;
+int DIRECTION = 0;
+int steps = 0;
 
 Image lastScreen(gameWidth, gameHeight);
 Tilemap tilemap[1];
@@ -43,6 +45,7 @@ void restart() {
 	Tilemap map(gameWidth, gameHeight);
 	tilemap[0] = map;
 	GAME_STATE = 0;
+	animating = 0;
 	tilemap[0].setTextures(textures);
 	tilemap[0].setSize(NUMBER_OF_TILES);
 	tilemap[0].setTiles(100, 50);
@@ -89,36 +92,68 @@ void drawTileMap() {
 }
 void timer(int value)
 {
-
-
+	glutPostRedisplay();
+	if (value < 5 && GAME_STATE == GAME_RUNNING) {
+		tilemap[0].tilewalk(DIRECTION);
+		glutTimerFunc(120, timer, ++value);
+	}
+	if (value == 5) {
+		animating = 0;
+	}
+	if (GAME_STATE == GAME_LOSS) {
+		if (value < 19) {
+			tilemap[0].explode();
+			glutTimerFunc(150, timer, ++value);
+	
+			
+		}
+	}
+	
 }
 
+
 void keyboard(unsigned char key, int x, int y) {
-	if (GAME_STATE == 0) {
+	if (GAME_STATE == GAME_RUNNING && animating == 0) {
 		switch (key) {
 		case '8':
-			tilemap[0].tilewalk(NORTH);
+			DIRECTION = NORTH;
+			animating = 1;
+			timer(0);
 			break;
 		case '2':
-			tilemap[0].tilewalk(SOUTH);
+			DIRECTION = SOUTH;
+			animating = 1;
+			timer(0);
 			break;
 		case '6':
-			tilemap[0].tilewalk(EAST);
+			DIRECTION = EAST;
+			animating = 1;
+			timer(0);
 			break;
 		case '4':
-			tilemap[0].tilewalk(WEST);
+			DIRECTION = WEST;
+			animating = 1;
+			timer(0);
 			break;
 		case '9':
-			tilemap[0].tilewalk(NORTHEAST);
+			DIRECTION = NORTHEAST;
+			animating = 1;
+			timer(0);
 			break;
 		case '3':
-			tilemap[0].tilewalk(SOUTHEAST);
+			DIRECTION = SOUTHEAST;
+			animating = 1;
+			timer(0);
 			break;
 		case '7':
-			tilemap[0].tilewalk(NORTHWEST);
+			DIRECTION = NORTHWEST;
+			animating = 1;
+			timer(0);
 			break;
 		case '1':
-			tilemap[0].tilewalk(SOUTHWEST);
+			DIRECTION = SOUTHWEST;
+			animating = 1;
+			timer(0);
 			break;
 		default:
 			break;
@@ -131,7 +166,7 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void mouse(int button, int state, int x, int y) {
-	if (GAME_STATE == 0) {
+	if (GAME_STATE == GAME_RUNNING) {
 		if (GLUT_LEFT_BUTTON == button && state == GLUT_DOWN) {
 			tilemap[0].mouseMap(x, y);
 			drawTileMap();
@@ -148,7 +183,7 @@ int main(int argc, char** argv) {
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Tiles");
 	init();
-	glutTimerFunc(100, timer, 0);
+	//glutTimerFunc(100, timer, 0);
 	glutDisplayFunc(display);
 	glutMouseFunc(mouse);
 	glutKeyboardFunc(keyboard);

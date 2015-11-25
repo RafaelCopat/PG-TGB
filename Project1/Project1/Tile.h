@@ -19,6 +19,7 @@ public:
 		this->height = height;
 		this->texture = texture;
 		this->visible = false;
+		this->visited = false;
 	}
 	int getHeight() {
 		return height;
@@ -39,11 +40,18 @@ public:
 	void setVisible() {
 		visible = true;
 	}
+	boolean isVisited() {
+		return visited;
+	}
+	void setVisited() {
+		visited = true;
+	}
 
 private:
 	GLuint texture;
 	int width;
 	int height;
+	boolean visited;
 	boolean visible;
 };
 
