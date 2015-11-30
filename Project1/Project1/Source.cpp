@@ -96,15 +96,21 @@ void timer(int value)
 	glutPostRedisplay();
 	if (value < 5 && GAME_STATE == GAME_RUNNING) {
 		outOfBounds = tilemap[0].tilewalk(DIRECTION,value + 1);
+		tilemap[0].walkState();
 		if (outOfBounds == 1) {
 			value = 5;
 			tilemap[0].reSetOutOfBounds();
+			tilemap[0].resetState();
+			animating = 0;
+		}
+		else if (outOfBounds == 2) {
 			animating = 0;
 		}
 		glutTimerFunc(120, timer, ++value);
 	}
 	if (value >= 5) {
 		animating = 0;
+		tilemap[0].resetState();
 	}
 	if (GAME_STATE == GAME_LOSS) {
 		if (value < 19) {
@@ -117,7 +123,7 @@ void timer(int value)
 
 
 void keyboard(unsigned char key, int x, int y) {
-	if (GAME_STATE == GAME_RUNNING && animating == 0) {
+	if (GAME_STATE == GAME_RUNNING && animating == 0)  {
 		switch (key) {
 		case '8':
 			DIRECTION = NORTH;
@@ -164,7 +170,7 @@ void keyboard(unsigned char key, int x, int y) {
 		}
 		drawTileMap();
 	}
-	if (key == '0') {
+	if ((key == '0' && animating == 0) || GAME_STATE == GAME_WIN) {
 		restart();
 	}
 }
@@ -187,7 +193,6 @@ int main(int argc, char** argv) {
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Tiles");
 	init();
-	//glutTimerFunc(100, timer, 0);
 	glutDisplayFunc(display);
 	glutMouseFunc(mouse);
 	glutKeyboardFunc(keyboard);

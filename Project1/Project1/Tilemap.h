@@ -180,9 +180,20 @@ public:
 	}
 
 	void drawCharacter(){
+		int x = tileSelectedX - 30;
+		int y = starty - tileSelectedY - (tiles[0].getHeight() / 4);
+		int w = 60;
+		int h = 120;
 		glBindTexture(GL_TEXTURE_2D, character.getTexture());
 		glBegin(GL_QUADS);
-		drawRect(tileSelectedX - 30, starty - tileSelectedY - tiles[0].getHeight()/2, 60,120);
+		glTexCoord2f(character.getTx(), 0);
+		glVertex2d(x, y);
+		glTexCoord2f(character.getTx(), 1);
+		glVertex2d(x, y + h);
+		glTexCoord2f(character.getTx() + 0.25, 1);
+		glVertex2d(x + w, y + h);
+		glTexCoord2f(character.getTx() + 0.25, 0);
+		glVertex2d(x + w, y);
 		glEnd();
 	}
 	int wouldGoOutOfBounds(int DIRECTION) {
@@ -311,7 +322,12 @@ public:
 			tileSelected = tilenumber;
 		}
 	}
-
+	void walkState() {
+		character.charState();
+	}
+	void resetState() {
+		character.setState(0);
+	}
 	void mouseMap(int x, int y) {
 		if (numberOfClicks > 0){
 			int tilenumber = whatTileIs(x, y);

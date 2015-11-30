@@ -1,4 +1,4 @@
-﻿Build started 29/11/2015 22:39:07.
+﻿Build started 30/11/2015 00:10:20.
      1>Project "C:\Users\Copat\Desktop\PG-TGB\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\Users\rafael.copat\freeglut\include /IC:\Users\Copat\Desktop\freeglut\include /IC:\Users\rafael.copat\Desktop\freeglut\include /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
@@ -15,15 +15,18 @@
      1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(160): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
      1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(177): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
      1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(178): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(186): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(186): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(229): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(329): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(343): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(344): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(345): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\source.cpp(183): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(302): warning C4715: 'Tilemap::tilewalk': not all control paths return a value
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(185): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(190): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(192): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(194): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(196): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(240): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(345): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(359): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(360): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(361): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\source.cpp(189): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\copat\desktop\pg-tgb\project1\project1\tilemap.h(313): warning C4715: 'Tilemap::tilewalk': not all control paths return a value
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Copat\Desktop\PG-TGB\Project1\Debug\Project1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Copat\Desktop\PG-TGB\Project1\Debug\Project1.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Copat\Desktop\PG-TGB\Project1\Debug\Project1.lib" /MACHINE:X86 Debug\Source.obj
          Project1.vcxproj -> C:\Users\Copat\Desktop\PG-TGB\Project1\Debug\Project1.exe
@@ -31,4 +34,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.11
+Time Elapsed 00:00:01.42
