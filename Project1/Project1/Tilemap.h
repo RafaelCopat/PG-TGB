@@ -169,7 +169,7 @@ public:
 		do {
 			tilenumber = rand() % size;
 		} while (tilenumber == size / 2);
-		tiles[rand() % size].setTexture(textures.getIds()[2]);
+		tiles[tilenumber].setTexture(textures.getIds()[2]);
 	
 	}
 	void setToCenterTile() {
