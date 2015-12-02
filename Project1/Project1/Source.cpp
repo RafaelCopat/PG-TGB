@@ -77,7 +77,7 @@ void init(void)
 	gluOrtho2D(0, gameWidth, 0, gameHeight);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.152, 0.282, 0.07, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
@@ -96,7 +96,6 @@ void timer(int value)
 	glutPostRedisplay();
 	if (value < 5 && GAME_STATE == GAME_RUNNING) {
 		outOfBounds = tilemap[0].tilewalk(DIRECTION,value + 1);
-		tilemap[0].walkState();
 		if (outOfBounds == 1) {
 			value = 5;
 			tilemap[0].reSetOutOfBounds();
@@ -105,6 +104,9 @@ void timer(int value)
 		}
 		else if (outOfBounds == 2) {
 			animating = 0;
+		}
+		else{
+			tilemap[0].walkState();
 		}
 		glutTimerFunc(120, timer, ++value);
 	}
@@ -125,42 +127,42 @@ void timer(int value)
 void keyboard(unsigned char key, int x, int y) {
 	if (GAME_STATE == GAME_RUNNING && animating == 0)  {
 		switch (key) {
-		case '8':
+		case 'w':
 			DIRECTION = NORTH;
 			animating = 1;
 			timer(0);
 			break;
-		case '2':
+		case 'x':
 			DIRECTION = SOUTH;
 			animating = 1;
 			timer(0);
 			break;
-		case '6':
+		case 'd':
 			DIRECTION = EAST;
 			animating = 1;
 			timer(0);
 			break;
-		case '4':
+		case 'a':
 			DIRECTION = WEST;
 			animating = 1;
 			timer(0);
 			break;
-		case '9':
+		case 'e':
 			DIRECTION = NORTHEAST;
 			animating = 1;
 			timer(0);
 			break;
-		case '3':
+		case 'c':
 			DIRECTION = SOUTHEAST;
 			animating = 1;
 			timer(0);
 			break;
-		case '7':
+		case 'q':
 			DIRECTION = NORTHWEST;
 			animating = 1;
 			timer(0);
 			break;
-		case '1':
+		case 'z':
 			DIRECTION = SOUTHWEST;
 			animating = 1;
 			timer(0);
@@ -170,7 +172,7 @@ void keyboard(unsigned char key, int x, int y) {
 		}
 		drawTileMap();
 	}
-	if ((key == '0' && animating == 0) || GAME_STATE == GAME_WIN) {
+	if (((key == '0' || key == 'r') && animating == 0) || GAME_STATE == GAME_WIN) {
 		restart();
 	}
 }
@@ -191,7 +193,7 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(gameWidth, gameHeight);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("Tiles");
+	glutCreateWindow("Campo Minado - Trabalho GB");
 	init();
 	glutDisplayFunc(display);
 	glutMouseFunc(mouse);

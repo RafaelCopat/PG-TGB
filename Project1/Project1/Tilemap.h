@@ -109,6 +109,7 @@ public:
 		}
 		drawCursors();
 		drawCharacter();
+		drawLogo();
 		return GAME_STATE;
 	}
 	void setTextures(Texture textures) {
@@ -345,6 +346,7 @@ public:
 			glEnd();
 		}
 	}
+
 	void reSetOutOfBounds() {
 		outOfBounds = 0;
 	}
@@ -365,6 +367,16 @@ public:
 			return tilenumber;
 		}
 	}
+
+
+	void drawLogo() {
+			glBindTexture(GL_TEXTURE_2D, 15);
+			glBegin(GL_QUADS);
+			drawRect(700, 20, 185, 95);
+			glEnd();
+		}
+
+
 private:
 	Tile * tiles;
 	Texture textures;

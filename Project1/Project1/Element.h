@@ -7,6 +7,7 @@ public:
 	Element() {
 		texture = 5;
 		tx = 0;
+		state = 0;
 	}
 
 	int getTexture() {
@@ -51,7 +52,7 @@ public:
 private:
 	int texture;
 	double tx;
-	int state = 0;
+	int state;
 };
 
 #endif
